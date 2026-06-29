@@ -97,11 +97,12 @@ function MouseTracker() {
   useEffect(() => {
     const el = document.querySelector('.react-flow__renderer');
     if (!el) return;
-    function onMove(e: MouseEvent) {
-      const p = screenToFlowPosition({ x: e.clientX, y: e.clientY });
+    const onMove = (e: Event) => {
+      const me = e as MouseEvent;
+      const p = screenToFlowPosition({ x: me.clientX, y: me.clientY });
       canvasMousePos.x = p.x;
       canvasMousePos.y = p.y;
-    }
+    };
     el.addEventListener('mousemove', onMove);
     return () => el.removeEventListener('mousemove', onMove);
   }, [screenToFlowPosition]);

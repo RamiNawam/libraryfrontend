@@ -42,6 +42,19 @@ html, body, #root {
   transition: stroke 0.3s ease;
 }
 
+/* Flowing "river" current on live dataflow lines */
+.edge-river {
+  stroke-dasharray: 9 13;
+  animation: river-flow 1.1s linear infinite;
+  filter: drop-shadow(0 0 2.5px currentColor);
+}
+
+@keyframes river-flow {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 4px;

@@ -4,11 +4,11 @@ import type { ConnectionNodeData, HealthStatus } from '../../types';
 
 function triangleFill(health: HealthStatus): string {
   switch (health) {
-    case 'healthy':  return '#22c55e';
-    case 'degraded': return '#f59e0b';
+    case 'healthy':  return '#3fb950';
+    case 'degraded': return '#d29922';
     case 'unhealthy':
-    case 'down':     return '#ef4444';
-    default:         return '#374151';
+    case 'down':     return '#e5534b';
+    default:         return '#3a4254';
   }
 }
 

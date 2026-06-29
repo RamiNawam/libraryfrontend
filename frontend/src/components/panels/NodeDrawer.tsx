@@ -21,11 +21,11 @@ function healthLabel(h: HealthStatus): string {
 
 function healthColor(h: HealthStatus): string {
   switch (h) {
-    case 'healthy':   return '#22c55e';
-    case 'degraded':  return '#f59e0b';
+    case 'healthy':   return '#3fb950';
+    case 'degraded':  return '#d29922';
     case 'down':
-    case 'unhealthy': return '#ef4444';
-    default:          return '#6b7280';
+    case 'unhealthy': return '#e5534b';
+    default:          return '#5a6378';
   }
 }
 

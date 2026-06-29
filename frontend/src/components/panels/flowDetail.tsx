@@ -4,6 +4,7 @@ import type {
   IndividualFlow,
   HealthStatus,
   LogicAppIntegrationConfig,
+  FlowMode,
 } from '../../types';
 import { timeAgo } from '../../lib/timeAgo';
 
@@ -66,11 +67,11 @@ export function FlowModeBadge({ mode }: { mode?: FlowMode }) {
 
 function healthDot(status: HealthStatus) {
   const colors: Record<HealthStatus, string> = {
-    healthy: '#1D9E75',
-    degraded: '#BA7517',
-    down: '#A32D2D',
-    unhealthy: '#A32D2D',
-    unknown: '#6b7280',
+    healthy: '#3fb950',
+    degraded: '#d29922',
+    down: '#e5534b',
+    unhealthy: '#e5534b',
+    unknown: '#5a6378',
   };
   return (
     <span

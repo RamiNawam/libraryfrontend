@@ -9,7 +9,7 @@ const { loadDb, saveDb } = require('../db');
 const router = express.Router();
 
 // GET /api/graph
-router.get('/', (_req, res) => {
+router.get('/graph', (_req, res) => {
   const db = loadDb();
   res.json({
     entities:     db.entities,

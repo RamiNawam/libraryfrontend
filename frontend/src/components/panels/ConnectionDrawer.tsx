@@ -12,11 +12,11 @@ interface ConnectionDrawerProps {
 
 function healthColor(h: HealthStatus): string {
   switch (h) {
-    case 'healthy':   return '#22c55e';
+    case 'healthy':   return '#3fb950';
     case 'unhealthy':
-    case 'down':      return '#ef4444';
-    case 'degraded':  return '#f59e0b';
-    default:          return '#6b7280';
+    case 'down':      return '#e5534b';
+    case 'degraded':  return '#d29922';
+    default:          return '#5a6378';
   }
 }
 

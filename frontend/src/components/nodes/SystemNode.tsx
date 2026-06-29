@@ -10,11 +10,11 @@ function visualHealth(mode: EntityMode | undefined, health: HealthStatus): Healt
 
 function dotColor(h: HealthStatus): string {
   switch (h) {
-    case 'healthy':  return '#22c55e';
-    case 'degraded': return '#f59e0b';
+    case 'healthy':  return '#3fb950';
+    case 'degraded': return '#d29922';
     case 'unhealthy':
-    case 'down':     return '#ef4444';
-    default:         return '#4b5563';
+    case 'down':     return '#e5534b';
+    default:         return '#5a6378';
   }
 }
 

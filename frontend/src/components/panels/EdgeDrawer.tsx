@@ -9,11 +9,11 @@ interface EdgeDrawerProps {
 
 function healthColor(h: HealthStatus): string {
   switch (h) {
-    case 'healthy': return '#1D9E75';
+    case 'healthy': return '#3fb950';
     case 'unhealthy':
-    case 'down': return '#A32D2D';
-    case 'degraded': return '#BA7517';
-    default: return '#6b7280';
+    case 'down': return '#e5534b';
+    case 'degraded': return '#d29922';
+    default: return '#5a6378';
   }
 }
 

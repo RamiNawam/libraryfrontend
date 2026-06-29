@@ -203,6 +203,11 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
         edges: s.edges.filter(
           (e) => !nodesToRemove.has(e.source) && !nodesToRemove.has(e.target)
         ),
+        valueStreams: s.valueStreams.map((vs) =>
+          vs.nodeIds
+            ? { ...vs, nodeIds: vs.nodeIds.filter((nid) => !nodesToRemove.has(nid)) }
+            : vs
+        ),
         selectedNodeId: nodesToRemove.has(s.selectedNodeId || '') ? null : s.selectedNodeId,
       };
     });

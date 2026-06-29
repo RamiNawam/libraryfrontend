@@ -73,6 +73,13 @@ router.delete('/:id', (req, res) => {
     }
   }
 
+  // Drop stale references to this entity from value streams
+  db.valueStreams = (db.valueStreams || []).map((vs) =>
+    vs.nodeIds
+      ? { ...vs, nodeIds: vs.nodeIds.filter((nid) => nid !== req.params.id) }
+      : vs
+  );
+
   saveDb(db);
   res.json({ ok: true });
 });
