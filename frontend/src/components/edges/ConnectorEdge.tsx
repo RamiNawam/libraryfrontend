@@ -1,15 +1,17 @@
 import { memo } from 'react';
 import { BaseEdge, getBezierPath, useInternalNode, type EdgeProps } from '@xyflow/react';
-import type { EdgeFlowData, HealthStatus } from '../../types';
+import type { ConnectionNodeData, EdgeFlowData, HealthStatus } from '../../types';
 import { getFloatingEdgeParams } from '../../lib/floatingEdge';
 
+// Must match triangleFill() in ConnectionNode.tsx so each edge shares the
+// color of the triangle (DataflowType) it connects to. Grey = mock.
 function edgeColor(health: HealthStatus): string {
   switch (health) {
     case 'healthy':   return '#3fb950';
     case 'unhealthy':
     case 'down':      return '#e5534b';
     case 'degraded':  return '#d29922';
-    default:          return '#5a6378'; // muted slate — not connected
+    default:          return '#3a4254'; // grey — mock / not connected
   }
 }
 
@@ -23,8 +25,18 @@ export const ConnectorEdge = memo(function ConnectorEdge({
   const sourceNode = useInternalNode(source);
   const targetNode = useInternalNode(target);
 
+  // Color the edge after the triangle (DataflowType) it touches, so the line
+  // always matches the triangle. Fall back to the edge's own stored health.
+  const triangleNode =
+    sourceNode?.type === 'connectionNode'
+      ? sourceNode
+      : targetNode?.type === 'connectionNode'
+        ? targetNode
+        : null;
+  const triangleHealth = (triangleNode?.data as Partial<ConnectionNodeData> | undefined)?.health;
+
   const flowData = (data ?? {}) as Partial<EdgeFlowData>;
-  const health = flowData.health ?? 'unknown';
+  const health = triangleHealth ?? flowData.health ?? 'unknown';
   const color = edgeColor(health);
   const isLive = health !== 'unknown';
 
