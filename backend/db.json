@@ -1,0 +1,310 @@
+{
+  "bootstrapped": true,
+  "entities": [
+    {
+      "id": "group-azure",
+      "type": "groupNode",
+      "position": {
+        "x": -3024.1621481700245,
+        "y": 40.46367503161491
+      },
+      "data": {
+        "label": "Azure Cloud"
+      },
+      "style": {
+        "width": 1222,
+        "height": 675
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "crm",
+      "type": "systemNode",
+      "position": {
+        "x": 81.83536277782844,
+        "y": 188.34678341898035
+      },
+      "data": {
+        "label": "CRM",
+        "category": "crm",
+        "environment": "uat",
+        "mode": "mock",
+        "health": "unknown",
+        "description": "Microsoft Dynamics 365 Customer Engagement",
+        "techStack": [
+          "Dynamics 365 CE",
+          "Power Platform"
+        ],
+        "layers": [
+          "CRM Layer"
+        ],
+        "metrics": {
+          "lastSync": null
+        }
+      },
+      "apiConnections": {},
+      "parentId": "group-azure"
+    },
+    {
+      "id": "fo",
+      "type": "systemNode",
+      "position": {
+        "x": 838.5170812648703,
+        "y": 172.4012029531751
+      },
+      "data": {
+        "label": "F&O",
+        "category": "erp",
+        "environment": "uat",
+        "mode": "mock",
+        "health": "unknown",
+        "description": "Microsoft Dynamics 365 Finance & Operations",
+        "techStack": [
+          "Dynamics 365 F&O",
+          "X++"
+        ],
+        "layers": [
+          "ERP Layer"
+        ],
+        "metrics": {
+          "lastSync": null
+        }
+      },
+      "apiConnections": {},
+      "parentId": "group-azure",
+      "style": {
+        "width": 285,
+        "height": 262
+      }
+    },
+    {
+      "id": "conn-logic-apps-customer",
+      "type": "connectionNode",
+      "position": {
+        "x": 475.35282826731384,
+        "y": 12.5666041188355
+      },
+      "data": {
+        "name": "Logic Apps Customer",
+        "sourceId": "crm",
+        "targetId": "fo",
+        "health": "degraded",
+        "flows": [
+          {
+            "id": "flow-contact-integration",
+            "name": "CrmOnlineAddressContactIntegration",
+            "protocol": "REST",
+            "direction": "outbound",
+            "status": "unknown",
+            "lastTriggered": "Never",
+            "volume": "0",
+            "lastError": "AADSTS900023: Specified tenant identifier 'your-tenant-id' is neither a valid DNS name, nor a valid external domain. Trace ID: 9c2b0cc3-9643-4682-a1d7-a74ecde99f00 Correlation ID: 2427fdf4-b5ba-412b-881a-8e285a6f79bc Timestamp: 2026-06-29 06:05:56Z",
+            "mode": "not_connected",
+            "description": "Syncs contact and address data from CRM to F&O",
+            "integration": {
+              "type": "logicApp",
+              "logicAppKind": "consumption",
+              "subscriptionId": "iunu",
+              "resourceGroup": "ujuj",
+              "workflowName": "ujuj"
+            },
+            "azure": {
+              "workflowName": "ujuj",
+              "logicAppKind": "consumption",
+              "resourceGroup": "ujuj",
+              "standardSiteName": null,
+              "lastRunStatus": null,
+              "lastCompleted": null,
+              "runId": null,
+              "rawRunCount": 0,
+              "syncedAt": "2026-06-29T06:05:56.785Z"
+            }
+          },
+          {
+            "id": "flow-account-integration",
+            "name": "CrmOnlineAccountIntegration",
+            "protocol": "REST",
+            "direction": "outbound",
+            "status": "unknown",
+            "lastTriggered": "Never",
+            "volume": "0",
+            "lastError": null,
+            "mode": "mock",
+            "description": "Syncs account data from CRM to F&O"
+          }
+        ]
+      },
+      "apiConnections": {},
+      "parentId": "group-azure"
+    },
+    {
+      "id": "othOnMwDA2kt0FcIFu10M",
+      "type": "connectionNode",
+      "position": {
+        "x": 447.5584386096998,
+        "y": 246.38506705309078
+      },
+      "data": {
+        "name": "Logic Apps",
+        "sourceId": "crm",
+        "targetId": "fo",
+        "health": "unknown",
+        "flows": []
+      },
+      "apiConnections": {},
+      "parentId": "group-azure"
+    },
+    {
+      "id": "Bi9fdeLzMxK33L1k1VWnl",
+      "apiConnections": {},
+      "type": "systemNode",
+      "position": {
+        "x": 111.53920613865102,
+        "y": 51.74642368879037
+      },
+      "data": {
+        "label": "fnohgv",
+        "category": "integration",
+        "environment": null,
+        "mode": "mock",
+        "health": "unknown",
+        "description": "",
+        "techStack": [],
+        "layers": [],
+        "metrics": {
+          "lastSync": null
+        }
+      },
+      "parentId": "fo",
+      "style": {
+        "width": 111,
+        "height": 59
+      }
+    },
+    {
+      "id": "spWxgolocRwfyUf-BQXyF",
+      "type": "connectionNode",
+      "position": {
+        "x": 414.4875324906434,
+        "y": 355.8128716278393
+      },
+      "data": {
+        "name": "hi",
+        "sourceId": "crm",
+        "targetId": "Bi9fdeLzMxK33L1k1VWnl",
+        "health": "unknown",
+        "flows": []
+      },
+      "apiConnections": {},
+      "parentId": "group-azure"
+    }
+  ],
+  "dataflows": [
+    {
+      "id": "edge-crm-to-conn-customer",
+      "source": "crm",
+      "target": "conn-logic-apps-customer",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "CRM",
+        "targetLabel": "Logic Apps Customer",
+        "flowCount": 2,
+        "health": "degraded",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "edge-conn-customer-to-fo",
+      "source": "conn-logic-apps-customer",
+      "target": "fo",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "Logic Apps Customer",
+        "targetLabel": "F&O",
+        "flowCount": 2,
+        "health": "degraded",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "4gVKFsaOk8GwV4rvbNJET",
+      "source": "crm",
+      "target": "othOnMwDA2kt0FcIFu10M",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "CRM",
+        "targetLabel": "Logic Apps",
+        "flowCount": 0,
+        "health": "unknown",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "CiDhrqzRb1fX1J6UsmcPE",
+      "source": "othOnMwDA2kt0FcIFu10M",
+      "target": "fo",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "Logic Apps",
+        "targetLabel": "F&O",
+        "flowCount": 0,
+        "health": "unknown",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "UyNPFfC3y_MescNDyahnT",
+      "source": "crm",
+      "target": "spWxgolocRwfyUf-BQXyF",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "CRM",
+        "targetLabel": "hi",
+        "flowCount": 0,
+        "health": "unknown",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "rjc4Sxtqb3WnXiX_ltyB1",
+      "source": "spWxgolocRwfyUf-BQXyF",
+      "target": "Bi9fdeLzMxK33L1k1VWnl",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "hi",
+        "targetLabel": "fnohgv",
+        "flowCount": 0,
+        "health": "unknown",
+        "flows": []
+      },
+      "apiConnections": {}
+    }
+  ],
+  "valueStreams": [
+    {
+      "id": "kc8hI1BFB5mOfNpNLxYQj",
+      "label": "Order to cash",
+      "color": "#60a5fa"
+    },
+    {
+      "id": "SW4I71QwmWvzfOF8xWQMY",
+      "label": "Demand to order",
+      "color": "#fb60c2"
+    },
+    {
+      "id": "leKgN-t0moAQ8tOYPgmCt",
+      "label": "quote to order",
+      "color": "#60fb7f"
+    },
+    {
+      "id": "uvuMJr0wSDExhcajhauNF",
+      "label": "issue to resolution",
+      "color": "#fbc260"
+    }
+  ]
+}
