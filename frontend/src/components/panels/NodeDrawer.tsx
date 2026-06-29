@@ -35,14 +35,17 @@ function visualHealth(mode: EntityMode | undefined, health: HealthStatus): Healt
 }
 
 export function NodeDrawer({ nodeId, onClose }: NodeDrawerProps) {
-  const { nodes, valueStreams, deleteEntity, upsertValueStream } = useGraphStore(useShallow((s) => ({
+  const { nodes, valueStreams, deleteEntity, upsertValueStream, checkNodeHealth } = useGraphStore(useShallow((s) => ({
     nodes: s.nodes,
     valueStreams: s.valueStreams,
     deleteEntity: s.deleteEntity,
     upsertValueStream: s.upsertValueStream,
+    checkNodeHealth: s.checkNodeHealth,
   })));
 
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const [checkError, setCheckError] = useState<string | null>(null);
 
   const node = nodes.find((n) => n.id === nodeId);
   if (!node || node.type !== 'systemNode') return null;
@@ -50,6 +53,8 @@ export function NodeDrawer({ nodeId, onClose }: NodeDrawerProps) {
   const data = node.data as SystemNodeData;
   const vHealth = visualHealth(data.mode, data.health);
   const color = healthColor(vHealth);
+  const platform = data.platform;
+  const healthCheck = data.healthCheck;
 
   // Children: any node whose parentId === this node
   const childNodes = nodes.filter((n) => n.parentId === nodeId);
@@ -57,6 +62,18 @@ export function NodeDrawer({ nodeId, onClose }: NodeDrawerProps) {
   async function handleDelete() {
     await deleteEntity(nodeId);
     onClose();
+  }
+
+  async function handleCheck() {
+    setChecking(true);
+    setCheckError(null);
+    try {
+      await checkNodeHealth(nodeId);
+    } catch (err) {
+      setCheckError(err instanceof Error ? err.message : 'Check failed');
+    } finally {
+      setChecking(false);
+    }
   }
 
   return (
@@ -82,6 +99,39 @@ export function NodeDrawer({ nodeId, onClose }: NodeDrawerProps) {
             {healthLabel(vHealth)}
           </span>
         </div>
+
+        {/* Health check (monitored platforms only) */}
+        {platform && (
+          <div>
+            <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1.5">
+              {platform.type === 'azure' ? 'Azure' : 'Salesforce'} Health Check
+            </div>
+            <div className="bg-[#0f1117] border border-[#2a2d3e] p-2.5 space-y-1.5" style={{ borderRadius: 3 }}>
+              <div className="text-[12px] text-gray-300">
+                {healthCheck?.detail ?? 'Not checked yet.'}
+              </div>
+              {healthCheck?.lastError && (
+                <div className="text-[11px] text-red-400 break-words">{healthCheck.lastError}</div>
+              )}
+              {healthCheck?.checkedAt && (
+                <div className="text-[10px] text-gray-600">
+                  Checked {new Date(healthCheck.checkedAt).toLocaleString()}
+                </div>
+              )}
+            </div>
+            {checkError && (
+              <div className="text-[11px] text-red-400 mt-1.5 break-words">{checkError}</div>
+            )}
+            <button
+              onClick={handleCheck}
+              disabled={checking}
+              className="w-full mt-2 bg-[#2a2d3e] hover:bg-[#3a3d4e] disabled:opacity-50 text-gray-300 text-[12px] py-2 transition-colors"
+              style={{ borderRadius: 3 }}
+            >
+              {checking ? 'Checking…' : 'Check now'}
+            </button>
+          </div>
+        )}
 
         {/* Children */}
         {childNodes.length > 0 && (

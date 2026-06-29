@@ -40,6 +40,8 @@ interface GraphActions {
   setRefreshInterval: (ms: number) => void;
   triggerRefresh: () => Promise<void>;
   syncAzureLogicAppsToGraph: () => Promise<void>;
+  checkPlatformHealth: () => Promise<void>;
+  checkNodeHealth: (nodeId: string) => Promise<void>;
 }
 
 type GraphStore = GraphState & GraphActions;
@@ -287,6 +289,27 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
   // ---- triggerRefresh ----
   triggerRefresh: async () => {
     await get().syncAzureLogicAppsToGraph();
+    await get().checkPlatformHealth();
+  },
+
+  // ---- checkPlatformHealth (Azure / Salesforce up-down) ----
+  checkPlatformHealth: async () => {
+    const graph = await api.checkPlatformHealth();
+    set({
+      nodes: graph.entities,
+      edges: graph.dataflows,
+      valueStreams: graph.valueStreams,
+      lastUpdated: new Date().toISOString(),
+    });
+  },
+
+  // ---- checkNodeHealth (single node "Check now") ----
+  checkNodeHealth: async (nodeId) => {
+    const updated = await api.checkNodeHealth(nodeId);
+    set((s) => ({
+      nodes: s.nodes.map((n) => (n.id === nodeId ? updated : n)),
+      lastUpdated: new Date().toISOString(),
+    }));
   },
 
   // ---- syncAzureLogicAppsToGraph ----

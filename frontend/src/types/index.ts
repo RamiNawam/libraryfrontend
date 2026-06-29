@@ -95,6 +95,20 @@ export interface NodeMetrics {
   errorRate?: number;
 }
 
+// Marks a node as a monitored platform (Azure / Salesforce) for up/down checks.
+export interface PlatformConfig {
+  type: 'azure' | 'salesforce';
+  instanceKey?: string; // Salesforce instance key (e.g. "USA123"); optional
+}
+
+// Result of the last platform reachability check.
+export interface PlatformHealthCheck {
+  status: HealthStatus;
+  detail: string;
+  checkedAt: string;
+  lastError?: string | null;
+}
+
 export interface SystemNodeData {
   label: string;
   category: NodeCategory;
@@ -106,10 +120,16 @@ export interface SystemNodeData {
   layers: BusinessLayer[];
   metrics: NodeMetrics;
   flashing?: boolean;
+  platform?: PlatformConfig;
+  healthCheck?: PlatformHealthCheck;
 }
 
 export interface GroupNodeData {
   label: string;
+  mode?: EntityMode;
+  health?: HealthStatus;
+  platform?: PlatformConfig;
+  healthCheck?: PlatformHealthCheck;
 }
 
 export interface ConnectionNodeData {

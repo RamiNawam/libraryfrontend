@@ -9,7 +9,7 @@ export interface GraphResponse {
   dataflows: MockEdge[];
   bootstrapped: boolean;
   valueStreams: ValueStream[];
-  errors?: { workflowName?: string | null; flowId?: string | null; error: string }[];
+  errors?: { workflowName?: string | null; flowId?: string | null; nodeId?: string | null; error: string }[];
 }
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
@@ -182,4 +182,16 @@ export function syncAzureLogicAppsToGraph(): Promise<GraphResponse> {
   return request<GraphResponse>('/api/azure/logicapps/sync-graph', {
     method: 'POST',
   });
+}
+
+// ---------------------------------------------------------------------------
+// Platform health (Azure / Salesforce up-down checks)
+// ---------------------------------------------------------------------------
+
+export function checkPlatformHealth(): Promise<GraphResponse> {
+  return request<GraphResponse>('/api/platform/health-graph', { method: 'POST' });
+}
+
+export function checkNodeHealth(nodeId: string): Promise<MockNode> {
+  return request<MockNode>(`/api/platform/health/${nodeId}`, { method: 'POST' });
 }

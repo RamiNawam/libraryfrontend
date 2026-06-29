@@ -1,30 +1,68 @@
 import { useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { useGraphStore } from '../../store/graphStore';
-import type { GroupNodeData } from '../../types';
+import type { GroupNodeData, HealthStatus } from '../../types';
 
 interface GroupDrawerProps {
   nodeId: string;
   onClose: () => void;
 }
 
+function healthLabel(h: HealthStatus): string {
+  switch (h) {
+    case 'healthy':  return 'Healthy';
+    case 'degraded': return 'Degraded';
+    case 'down':
+    case 'unhealthy': return 'Down';
+    default:          return 'Unknown';
+  }
+}
+
+function healthColor(h: HealthStatus): string {
+  switch (h) {
+    case 'healthy':   return '#3fb950';
+    case 'degraded':  return '#d29922';
+    case 'down':
+    case 'unhealthy': return '#e5534b';
+    default:          return '#5a6378';
+  }
+}
+
 export function GroupDrawer({ nodeId, onClose }: GroupDrawerProps) {
-  const { nodes, patchEntity, deleteEntity } = useGraphStore(useShallow((s) => ({
+  const { nodes, patchEntity, deleteEntity, checkNodeHealth } = useGraphStore(useShallow((s) => ({
     nodes: s.nodes,
     patchEntity: s.patchEntity,
     deleteEntity: s.deleteEntity,
+    checkNodeHealth: s.checkNodeHealth,
   })));
 
   const node = nodes.find((n) => n.id === nodeId);
   const [editing, setEditing] = useState(false);
   const [label, setLabel] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const [checkError, setCheckError] = useState<string | null>(null);
 
   if (!node || node.type !== 'groupNode') return null;
 
   const data = node.data as GroupNodeData;
+  const platform = data.platform;
+  const healthCheck = data.healthCheck;
+  const vHealth: HealthStatus = data.health ?? 'unknown';
 
   const childNodes = nodes.filter((n) => n.parentId === nodeId);
+
+  async function handleCheck() {
+    setChecking(true);
+    setCheckError(null);
+    try {
+      await checkNodeHealth(nodeId);
+    } catch (err) {
+      setCheckError(err instanceof Error ? err.message : 'Check failed');
+    } finally {
+      setChecking(false);
+    }
+  }
 
   async function handleSave() {
     if (!label.trim()) return;
@@ -81,6 +119,44 @@ export function GroupDrawer({ nodeId, onClose }: GroupDrawerProps) {
           </div>
         ) : (
           <>
+            {/* Health check (monitored platforms only, e.g. Azure) */}
+            {platform && (
+              <div className="space-y-2">
+                <div className="text-xs text-gray-500 uppercase tracking-wider">
+                  {platform.type === 'azure' ? 'Azure' : 'Salesforce'} Health Check
+                </div>
+                <span
+                  className="inline-block text-[12px] font-medium px-2 py-1"
+                  style={{ backgroundColor: healthColor(vHealth) + '22', color: healthColor(vHealth), borderRadius: 3 }}
+                >
+                  {healthLabel(vHealth)}
+                </span>
+                <div className="bg-[#0f1117] border border-[#2a2d3e] p-2.5 space-y-1.5 rounded">
+                  <div className="text-[12px] text-gray-300">
+                    {healthCheck?.detail ?? 'Not checked yet.'}
+                  </div>
+                  {healthCheck?.lastError && (
+                    <div className="text-[11px] text-red-400 break-words">{healthCheck.lastError}</div>
+                  )}
+                  {healthCheck?.checkedAt && (
+                    <div className="text-[10px] text-gray-600">
+                      Checked {new Date(healthCheck.checkedAt).toLocaleString()}
+                    </div>
+                  )}
+                </div>
+                {checkError && (
+                  <div className="text-[11px] text-red-400 break-words">{checkError}</div>
+                )}
+                <button
+                  onClick={handleCheck}
+                  disabled={checking}
+                  className="w-full bg-[#2a2d3e] hover:bg-[#3a3d4e] disabled:opacity-50 text-gray-300 text-[12px] py-2 rounded transition-colors"
+                >
+                  {checking ? 'Checking…' : 'Check now'}
+                </button>
+              </div>
+            )}
+
             <div className="space-y-2">
               <div className="text-xs text-gray-500 uppercase tracking-wider">Children ({childNodes.length})</div>
               {childNodes.length === 0 ? (

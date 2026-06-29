@@ -11,6 +11,7 @@ const connectionsRouter  = require('./routes/connections');
 const dataflowsRouter    = require('./routes/dataflows');
 const valueStreamsRouter  = require('./routes/valueStreams');
 const azureRouter        = require('./routes/azure');
+const platformRouter     = require('./routes/platform');
 
 const app  = express();
 const PORT = process.env.PORT || 3001;
@@ -32,6 +33,7 @@ app.use('/api/connections',   connectionsRouter);    // POST /api/connections (c
 app.use('/api/dataflows',     dataflowsRouter);      // Edge CRUD
 app.use('/api/valuestreams',  valueStreamsRouter);   // Value stream CRUD
 app.use('/api/azure',         azureRouter);          // Azure Logic Apps sync
+app.use('/api/platform',      platformRouter);       // Platform up/down checks (Azure, Salesforce)
 
 app.listen(PORT, () => {
   console.log(`GenDigitalTwin backend  →  http://localhost:${PORT}`);
@@ -44,4 +46,5 @@ app.listen(PORT, () => {
   console.log('    CRUD /api/dataflows');
   console.log('    CRUD /api/valuestreams');
   console.log('    POST /api/azure/logicapps/sync-graph');
+  console.log('    POST /api/platform/health-graph');
 });

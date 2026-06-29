@@ -1,11 +1,24 @@
 import { memo } from 'react';
 import { NodeResizer, type NodeProps, type ResizeDragEvent, type ResizeParams } from '@xyflow/react';
 import { useGraphStore } from '../../store/graphStore';
-import type { GroupNodeData } from '../../types';
+import type { GroupNodeData, HealthStatus } from '../../types';
+
+function dotColor(h: HealthStatus): string {
+  switch (h) {
+    case 'healthy':  return '#3fb950';
+    case 'degraded': return '#d29922';
+    case 'unhealthy':
+    case 'down':     return '#e5534b';
+    default:         return '#5a6378';
+  }
+}
 
 export const GroupNode = memo(function GroupNode({ id, data, selected }: NodeProps) {
   const d           = data as unknown as GroupNodeData;
   const patchEntity = useGraphStore((s) => s.patchEntity);
+
+  // A monitored group (e.g. Azure) shows its reachability; others stay neutral.
+  const statusColor = d.platform ? dotColor(d.health ?? 'unknown') : '#5a6378';
 
   function handleResizeEnd(_event: ResizeDragEvent, params: ResizeParams) {
     patchEntity(id, { style: { width: params.width, height: params.height } });
@@ -28,10 +41,9 @@ export const GroupNode = memo(function GroupNode({ id, data, selected }: NodePro
         onResizeEnd={handleResizeEnd}
       />
       <div className="pointer-events-none px-3 pt-2 flex items-center gap-1.5">
-        {/* Group status is independent of its children (wired up later) — neutral indicator */}
         <span
           className="w-2 h-2 rounded-full flex-shrink-0"
-          style={{ backgroundColor: '#5a6378' }}
+          style={{ backgroundColor: statusColor }}
         />
         <span className="text-[11px] text-gray-400 font-medium select-none tracking-wide">
           {d.label}

@@ -24,6 +24,9 @@
         ],
         "metrics": {
           "lastSync": null
+        },
+        "platform": {
+          "type": "salesforce"
         }
       },
       "apiConnections": {},
