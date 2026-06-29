@@ -2,27 +2,11 @@
   "bootstrapped": true,
   "entities": [
     {
-      "id": "group-azure",
-      "type": "groupNode",
-      "position": {
-        "x": -3024.1621481700245,
-        "y": 40.46367503161491
-      },
-      "data": {
-        "label": "Azure Cloud"
-      },
-      "style": {
-        "width": 1222,
-        "height": 675
-      },
-      "apiConnections": {}
-    },
-    {
-      "id": "crm",
+      "id": "n-uRyP8V8d",
       "type": "systemNode",
       "position": {
-        "x": 81.83536277782844,
-        "y": 188.34678341898035
+        "x": 80,
+        "y": 380
       },
       "data": {
         "label": "CRM",
@@ -42,15 +26,14 @@
           "lastSync": null
         }
       },
-      "apiConnections": {},
-      "parentId": "group-azure"
+      "apiConnections": {}
     },
     {
-      "id": "fo",
+      "id": "n-uc_7gzAp",
       "type": "systemNode",
       "position": {
-        "x": 838.5170812648703,
-        "y": 172.4012029531751
+        "x": 1150,
+        "y": 380
       },
       "data": {
         "label": "F&O",
@@ -70,215 +53,620 @@
           "lastSync": null
         }
       },
-      "apiConnections": {},
-      "parentId": "group-azure",
-      "style": {
-        "width": 285,
-        "height": 262
-      }
+      "apiConnections": {}
     },
     {
-      "id": "conn-logic-apps-customer",
-      "type": "connectionNode",
-      "position": {
-        "x": 475.35282826731384,
-        "y": 12.5666041188355
-      },
-      "data": {
-        "name": "Logic Apps Customer",
-        "sourceId": "crm",
-        "targetId": "fo",
-        "health": "degraded",
-        "flows": [
-          {
-            "id": "flow-contact-integration",
-            "name": "CrmOnlineAddressContactIntegration",
-            "protocol": "REST",
-            "direction": "outbound",
-            "status": "unknown",
-            "lastTriggered": "Never",
-            "volume": "0",
-            "lastError": "AADSTS900023: Specified tenant identifier 'your-tenant-id' is neither a valid DNS name, nor a valid external domain. Trace ID: 9c2b0cc3-9643-4682-a1d7-a74ecde99f00 Correlation ID: 2427fdf4-b5ba-412b-881a-8e285a6f79bc Timestamp: 2026-06-29 06:05:56Z",
-            "mode": "not_connected",
-            "description": "Syncs contact and address data from CRM to F&O",
-            "integration": {
-              "type": "logicApp",
-              "logicAppKind": "consumption",
-              "subscriptionId": "iunu",
-              "resourceGroup": "ujuj",
-              "workflowName": "ujuj"
-            },
-            "azure": {
-              "workflowName": "ujuj",
-              "logicAppKind": "consumption",
-              "resourceGroup": "ujuj",
-              "standardSiteName": null,
-              "lastRunStatus": null,
-              "lastCompleted": null,
-              "runId": null,
-              "rawRunCount": 0,
-              "syncedAt": "2026-06-29T06:05:56.785Z"
-            }
-          },
-          {
-            "id": "flow-account-integration",
-            "name": "CrmOnlineAccountIntegration",
-            "protocol": "REST",
-            "direction": "outbound",
-            "status": "unknown",
-            "lastTriggered": "Never",
-            "volume": "0",
-            "lastError": null,
-            "mode": "mock",
-            "description": "Syncs account data from CRM to F&O"
-          }
-        ]
-      },
-      "apiConnections": {},
-      "parentId": "group-azure"
-    },
-    {
-      "id": "othOnMwDA2kt0FcIFu10M",
-      "type": "connectionNode",
-      "position": {
-        "x": 447.5584386096998,
-        "y": 246.38506705309078
-      },
-      "data": {
-        "name": "Logic Apps",
-        "sourceId": "crm",
-        "targetId": "fo",
-        "health": "unknown",
-        "flows": []
-      },
-      "apiConnections": {},
-      "parentId": "group-azure"
-    },
-    {
-      "id": "Bi9fdeLzMxK33L1k1VWnl",
-      "apiConnections": {},
+      "id": "n-SWMGYd6S",
       "type": "systemNode",
       "position": {
-        "x": 111.53920613865102,
-        "y": 51.74642368879037
+        "x": 80,
+        "y": 780
       },
       "data": {
-        "label": "fnohgv",
-        "category": "integration",
+        "label": "Docmosis",
+        "category": "external",
         "environment": null,
         "mode": "mock",
         "health": "unknown",
-        "description": "",
+        "description": "Document generation service",
         "techStack": [],
-        "layers": [],
+        "layers": [
+          "Integration Layer"
+        ],
         "metrics": {
           "lastSync": null
         }
       },
-      "parentId": "fo",
-      "style": {
-        "width": 111,
-        "height": 59
-      }
+      "apiConnections": {}
     },
     {
-      "id": "spWxgolocRwfyUf-BQXyF",
-      "type": "connectionNode",
+      "id": "n-WGnnx-Rf",
+      "type": "systemNode",
       "position": {
-        "x": 414.4875324906434,
-        "y": 355.8128716278393
+        "x": 1150,
+        "y": 780
       },
       "data": {
-        "name": "hi",
-        "sourceId": "crm",
-        "targetId": "Bi9fdeLzMxK33L1k1VWnl",
+        "label": "Docentric",
+        "category": "external",
+        "environment": null,
+        "mode": "mock",
         "health": "unknown",
+        "description": "Document reporting / templating service",
+        "techStack": [],
+        "layers": [
+          "Integration Layer"
+        ],
+        "metrics": {
+          "lastSync": null
+        }
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "n-NIJdLtTJ",
+      "type": "systemNode",
+      "position": {
+        "x": 1520,
+        "y": 120
+      },
+      "data": {
+        "label": "Clear Tax",
+        "category": "external",
+        "environment": null,
+        "mode": "mock",
+        "health": "unknown",
+        "description": "Tax compliance integration",
+        "techStack": [],
+        "layers": [
+          "Integration Layer"
+        ],
+        "metrics": {
+          "lastSync": null
+        }
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "c-RKDRYwUJ",
+      "type": "connectionNode",
+      "position": {
+        "x": 580,
+        "y": 120
+      },
+      "data": {
+        "name": "Logic Apps Customer",
+        "sourceId": "n-uRyP8V8d",
+        "targetId": "n-uc_7gzAp",
+        "health": "healthy",
+        "flows": [
+          {
+            "id": "fl-mpyfejvq-ybp5s",
+            "name": "account integration (cust)-->CrmOnlineAccountIntegration",
+            "protocol": "REST",
+            "direction": "outbound",
+            "status": "healthy",
+            "lastTriggered": "2026-06-26T10:25:33.5688293Z",
+            "volume": "",
+            "lastError": null,
+            "apiLink": "",
+            "mode": "azure",
+            "azure": {
+              "workflowName": "CrmOnlineAccountIntegration",
+              "logicAppKind": "consumption",
+              "resourceGroup": "rg-dbsintegration-uat",
+              "standardSiteName": null,
+              "lastRunStatus": "Succeeded",
+              "lastCompleted": "2026-06-26T10:25:47.7289598Z",
+              "runId": "08584191373520452518173954675CU28",
+              "rawRunCount": 5,
+              "syncedAt": "2026-06-26T14:58:28.731Z"
+            }
+          },
+          {
+            "id": "fl-mpyfer46-nzbik",
+            "name": "customer contact integration-->CrmOnlineContactIntegration",
+            "protocol": "REST",
+            "direction": "outbound",
+            "status": "healthy",
+            "lastTriggered": "2026-06-26T14:48:57.3463472Z",
+            "volume": "",
+            "lastError": null,
+            "apiLink": "",
+            "mode": "azure",
+            "azure": {
+              "workflowName": "CrmOnlineContactIntegration",
+              "logicAppKind": "consumption",
+              "resourceGroup": "rg-dbsintegration-uat",
+              "standardSiteName": null,
+              "lastRunStatus": "Succeeded",
+              "lastCompleted": "2026-06-26T14:49:40.5653001Z",
+              "runId": "08584191215741040200830306293CU03",
+              "rawRunCount": 5,
+              "syncedAt": "2026-06-26T14:58:28.731Z"
+            }
+          },
+          {
+            "id": "fl-mpyfewun-ob9o6",
+            "name": "adress integration (cust)--> CrmOnlineAddressIntegration",
+            "protocol": "REST",
+            "direction": "outbound",
+            "status": "healthy",
+            "lastTriggered": "2026-06-26T10:24:40.343123Z",
+            "volume": "",
+            "lastError": null,
+            "apiLink": "",
+            "mode": "azure",
+            "azure": {
+              "workflowName": "CrmOnlineAddressIntegration",
+              "logicAppKind": "consumption",
+              "resourceGroup": "rg-dbsintegration-uat",
+              "standardSiteName": null,
+              "lastRunStatus": "Succeeded",
+              "lastCompleted": "2026-06-26T10:24:43.135012Z",
+              "runId": "08584191374207638776374075681CU18",
+              "rawRunCount": 5,
+              "syncedAt": "2026-06-26T14:58:28.731Z"
+            }
+          },
+          {
+            "id": "fl-mpyff33i-afi0x",
+            "name": "shipping contact integration-->CrmOnlineAddressContactIntegration",
+            "protocol": "REST",
+            "direction": "outbound",
+            "status": "healthy",
+            "lastTriggered": "2026-06-26T13:13:16.2683696Z",
+            "volume": "",
+            "lastError": null,
+            "apiLink": "",
+            "mode": "azure",
+            "azure": {
+              "workflowName": "CrmOnlineAddressContactIntegration",
+              "logicAppKind": "consumption",
+              "resourceGroup": "rg-dbsintegration-uat",
+              "standardSiteName": null,
+              "lastRunStatus": "Succeeded",
+              "lastCompleted": "2026-06-26T13:13:18.5396676Z",
+              "runId": "08584191272919282706123292381CU06",
+              "rawRunCount": 5,
+              "syncedAt": "2026-06-26T14:58:28.731Z"
+            }
+          }
+        ]
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "c-9vu7Uls5",
+      "type": "connectionNode",
+      "position": {
+        "x": 580,
+        "y": 300
+      },
+      "data": {
+        "name": "Logic Apps Order",
+        "sourceId": "n-uRyP8V8d",
+        "targetId": "n-uc_7gzAp",
+        "health": "healthy",
+        "flows": [
+          {
+            "id": "fl-mpyffafn-lobtf",
+            "name": "OrderIntegration",
+            "protocol": "REST",
+            "direction": "outbound",
+            "status": "healthy",
+            "lastTriggered": "2026-06-26T14:36:44.5158579Z",
+            "volume": "",
+            "lastError": null,
+            "apiLink": "",
+            "mode": "azure",
+            "azure": {
+              "workflowName": "OrderIntegration",
+              "logicAppKind": "consumption",
+              "resourceGroup": "rg-dbsintegration-uat",
+              "standardSiteName": null,
+              "lastRunStatus": "Succeeded",
+              "lastCompleted": "2026-06-26T14:39:32.2550414Z",
+              "runId": "08584191223019118465941905327CU13",
+              "rawRunCount": 5,
+              "syncedAt": "2026-06-26T14:58:28.731Z"
+            }
+          },
+          {
+            "id": "fl-mpyffexi-ali52",
+            "name": "msvc-SystemActivation",
+            "protocol": "REST",
+            "direction": "outbound",
+            "status": "healthy",
+            "lastTriggered": "2026-06-26T13:04:22.6759109Z",
+            "volume": "",
+            "lastError": null,
+            "apiLink": "",
+            "mode": "azure",
+            "azure": {
+              "workflowName": "msvc-SystemActivation",
+              "logicAppKind": "consumption",
+              "resourceGroup": "rg-dbsintegration-uat",
+              "standardSiteName": null,
+              "lastRunStatus": "Succeeded",
+              "lastCompleted": "2026-06-26T13:04:42.4114157Z",
+              "runId": "08584191278279069122040381341CU28",
+              "rawRunCount": 5,
+              "syncedAt": "2026-06-26T14:58:28.731Z"
+            }
+          }
+        ]
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "c-YiaWCfnS",
+      "type": "connectionNode",
+      "position": {
+        "x": 580,
+        "y": 480
+      },
+      "data": {
+        "name": "ODS",
+        "sourceId": "n-uc_7gzAp",
+        "targetId": "n-uRyP8V8d",
+        "health": "healthy",
         "flows": []
       },
-      "apiConnections": {},
-      "parentId": "group-azure"
+      "apiConnections": {}
+    },
+    {
+      "id": "c-NCLgNoQn",
+      "type": "connectionNode",
+      "position": {
+        "x": 580,
+        "y": 660
+      },
+      "data": {
+        "name": "Logic Apps Return",
+        "sourceId": "n-uc_7gzAp",
+        "targetId": "n-uRyP8V8d",
+        "health": "unhealthy",
+        "flows": [
+          {
+            "id": "fl-mpyfdn9i-rzqlm",
+            "name": "BulkAccountInvoiceAccountUpdate",
+            "protocol": "REST",
+            "direction": "outbound",
+            "status": "unhealthy",
+            "lastTriggered": "2026-06-16T15:00:43.697305Z",
+            "volume": "",
+            "lastError": null,
+            "apiLink": "",
+            "mode": "azure",
+            "azure": {
+              "workflowName": "BulkAccountInvoiceAccountUpdate",
+              "logicAppKind": "consumption",
+              "resourceGroup": "rg-dbsintegration-uat",
+              "standardSiteName": null,
+              "lastRunStatus": "Failed",
+              "lastCompleted": "2026-06-16T15:00:44.7745891Z",
+              "runId": "08584199848417814157861370774CU20",
+              "rawRunCount": 3,
+              "syncedAt": "2026-06-26T14:58:28.731Z"
+            }
+          },
+          {
+            "id": "fl-mpyfdukt-xdmgm",
+            "name": "SyncMethodofPaymentAccountFromFnOtoCrmOnline",
+            "protocol": "REST",
+            "direction": "outbound",
+            "status": "healthy",
+            "lastTriggered": "2026-06-12T15:54:00.1783329Z",
+            "volume": "",
+            "lastError": null,
+            "apiLink": "",
+            "mode": "azure",
+            "azure": {
+              "workflowName": "SyncMethodofPaymentAccountFromFnOtoCrmOnline",
+              "logicAppKind": "consumption",
+              "resourceGroup": "rg-dbsintegration-uat",
+              "standardSiteName": null,
+              "lastRunStatus": "Succeeded",
+              "lastCompleted": "2026-06-12T15:54:24.9269558Z",
+              "runId": "08584203272453271924575266541CU15",
+              "rawRunCount": 4,
+              "syncedAt": "2026-06-26T14:58:28.731Z"
+            }
+          },
+          {
+            "id": "fl-mpyfe166-fb7lo",
+            "name": "BankingInformation SyncAccountfromFnOtoCrmOnline",
+            "protocol": "REST",
+            "direction": "outbound",
+            "status": "healthy",
+            "lastTriggered": "2026-06-03T18:54:28.965Z",
+            "volume": "",
+            "lastError": null,
+            "apiLink": "",
+            "mode": "mock"
+          },
+          {
+            "id": "fl-mpyfe9y6-0fj97",
+            "name": "SalesTax",
+            "protocol": "REST",
+            "direction": "outbound",
+            "status": "healthy",
+            "lastTriggered": "2026-06-03T18:54:40.373Z",
+            "volume": "",
+            "lastError": null,
+            "apiLink": "",
+            "mode": "mock"
+          }
+        ]
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "c-dB5Jp52E",
+      "type": "connectionNode",
+      "position": {
+        "x": 330,
+        "y": 840
+      },
+      "data": {
+        "name": "Integration",
+        "sourceId": "n-SWMGYd6S",
+        "targetId": "n-uRyP8V8d",
+        "health": "healthy",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "c-wAAwjSB6",
+      "type": "connectionNode",
+      "position": {
+        "x": 880,
+        "y": 840
+      },
+      "data": {
+        "name": "Integration",
+        "sourceId": "n-WGnnx-Rf",
+        "targetId": "n-uc_7gzAp",
+        "health": "healthy",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "c-uOdnYeEg",
+      "type": "connectionNode",
+      "position": {
+        "x": 1150,
+        "y": 120
+      },
+      "data": {
+        "name": "Logic App",
+        "sourceId": "n-uc_7gzAp",
+        "targetId": "n-NIJdLtTJ",
+        "health": "unknown",
+        "flows": [
+          {
+            "id": "fl-mqii6guz-eomiw",
+            "name": "las-erp-integration-uat",
+            "protocol": "REST",
+            "direction": "outbound",
+            "status": "unknown",
+            "lastTriggered": "2026-06-17T20:07:59.827Z",
+            "volume": "",
+            "lastError": "Azure API error 404: {\"error\":{\"code\":\"ResourceNotFound\",\"message\":\"The Resource 'Microsoft.Logic/workflows/las-erp-integration-uat' under resource group 'rg-dbsintegration-uat' was not found. For more details please go to https://aka.ms/ARMResourceNotFoundFix\"}}",
+            "apiLink": "",
+            "mode": "not_connected",
+            "azure": {
+              "workflowName": "las-erp-integration-uat",
+              "logicAppKind": "consumption",
+              "resourceGroup": "rg-dbsintegration-uat",
+              "standardSiteName": null,
+              "lastRunStatus": "Error",
+              "lastCompleted": null,
+              "runId": null,
+              "rawRunCount": 0,
+              "syncedAt": "2026-06-26T14:58:28.731Z"
+            }
+          }
+        ]
+      },
+      "apiConnections": {}
     }
   ],
   "dataflows": [
     {
-      "id": "edge-crm-to-conn-customer",
-      "source": "crm",
-      "target": "conn-logic-apps-customer",
+      "id": "ce-CRMcust",
+      "source": "n-uRyP8V8d",
+      "target": "c-RKDRYwUJ",
       "type": "connectorEdge",
       "data": {
         "sourceLabel": "CRM",
         "targetLabel": "Logic Apps Customer",
-        "flowCount": 2,
-        "health": "degraded",
+        "flowCount": 4,
+        "health": "healthy",
         "flows": []
       },
       "apiConnections": {}
     },
     {
-      "id": "edge-conn-customer-to-fo",
-      "source": "conn-logic-apps-customer",
-      "target": "fo",
+      "id": "ce-pmWmHPXq",
+      "source": "c-RKDRYwUJ",
+      "target": "n-uc_7gzAp",
       "type": "connectorEdge",
       "data": {
         "sourceLabel": "Logic Apps Customer",
         "targetLabel": "F&O",
-        "flowCount": 2,
-        "health": "degraded",
+        "flowCount": 4,
+        "health": "healthy",
         "flows": []
       },
       "apiConnections": {}
     },
     {
-      "id": "4gVKFsaOk8GwV4rvbNJET",
-      "source": "crm",
-      "target": "othOnMwDA2kt0FcIFu10M",
+      "id": "ce-sXpEo609",
+      "source": "n-uRyP8V8d",
+      "target": "c-9vu7Uls5",
       "type": "connectorEdge",
       "data": {
         "sourceLabel": "CRM",
-        "targetLabel": "Logic Apps",
-        "flowCount": 0,
-        "health": "unknown",
+        "targetLabel": "Logic Apps Order",
+        "flowCount": 2,
+        "health": "healthy",
         "flows": []
       },
       "apiConnections": {}
     },
     {
-      "id": "CiDhrqzRb1fX1J6UsmcPE",
-      "source": "othOnMwDA2kt0FcIFu10M",
-      "target": "fo",
+      "id": "ce-M_8wvCel",
+      "source": "c-9vu7Uls5",
+      "target": "n-uc_7gzAp",
       "type": "connectorEdge",
       "data": {
-        "sourceLabel": "Logic Apps",
+        "sourceLabel": "Logic Apps Order",
+        "targetLabel": "F&O",
+        "flowCount": 2,
+        "health": "healthy",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "ce-gp6k2Ukm",
+      "source": "n-uc_7gzAp",
+      "target": "c-YiaWCfnS",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "F&O",
+        "targetLabel": "ODS",
+        "flowCount": 0,
+        "health": "healthy",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "ce-ij5G5r9z",
+      "source": "c-YiaWCfnS",
+      "target": "n-uRyP8V8d",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "ODS",
+        "targetLabel": "CRM",
+        "flowCount": 0,
+        "health": "healthy",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "ce-yRM2GSg7",
+      "source": "n-uc_7gzAp",
+      "target": "c-NCLgNoQn",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "F&O",
+        "targetLabel": "Logic Apps Return",
+        "flowCount": 4,
+        "health": "unhealthy",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "ce-FOCzJgFk",
+      "source": "c-NCLgNoQn",
+      "target": "n-uRyP8V8d",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "Logic Apps Return",
+        "targetLabel": "CRM",
+        "flowCount": 4,
+        "health": "unhealthy",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "ce-CoAUXHxN",
+      "source": "n-SWMGYd6S",
+      "target": "c-dB5Jp52E",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "Docmosis",
+        "targetLabel": "Integration",
+        "flowCount": 0,
+        "health": "healthy",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "ce-aAQNagz3",
+      "source": "c-dB5Jp52E",
+      "target": "n-uRyP8V8d",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "Integration",
+        "targetLabel": "CRM",
+        "flowCount": 0,
+        "health": "healthy",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "ce-i6IPE-1x",
+      "source": "n-WGnnx-Rf",
+      "target": "c-wAAwjSB6",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "Docentric",
+        "targetLabel": "Integration",
+        "flowCount": 0,
+        "health": "healthy",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "ce-upIUAGX-",
+      "source": "c-wAAwjSB6",
+      "target": "n-uc_7gzAp",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "Integration",
         "targetLabel": "F&O",
         "flowCount": 0,
+        "health": "healthy",
+        "flows": []
+      },
+      "apiConnections": {}
+    },
+    {
+      "id": "ce-xjxAvWHE",
+      "source": "n-uc_7gzAp",
+      "target": "c-uOdnYeEg",
+      "type": "connectorEdge",
+      "data": {
+        "sourceLabel": "F&O",
+        "targetLabel": "Logic App",
+        "flowCount": 1,
         "health": "unknown",
         "flows": []
       },
       "apiConnections": {}
     },
     {
-      "id": "UyNPFfC3y_MescNDyahnT",
-      "source": "crm",
-      "target": "spWxgolocRwfyUf-BQXyF",
+      "id": "ce-s0FJ9ixT",
+      "source": "c-uOdnYeEg",
+      "target": "n-NIJdLtTJ",
       "type": "connectorEdge",
       "data": {
-        "sourceLabel": "CRM",
-        "targetLabel": "hi",
-        "flowCount": 0,
-        "health": "unknown",
-        "flows": []
-      },
-      "apiConnections": {}
-    },
-    {
-      "id": "rjc4Sxtqb3WnXiX_ltyB1",
-      "source": "spWxgolocRwfyUf-BQXyF",
-      "target": "Bi9fdeLzMxK33L1k1VWnl",
-      "type": "connectorEdge",
-      "data": {
-        "sourceLabel": "hi",
-        "targetLabel": "fnohgv",
-        "flowCount": 0,
+        "sourceLabel": "Logic App",
+        "targetLabel": "Clear Tax",
+        "flowCount": 1,
         "health": "unknown",
         "flows": []
       },
@@ -287,24 +675,29 @@
   ],
   "valueStreams": [
     {
-      "id": "kc8hI1BFB5mOfNpNLxYQj",
-      "label": "Order to cash",
-      "color": "#60a5fa"
+      "id": "order-to-cash",
+      "label": "Order to Cash",
+      "color": "#22c55e"
     },
     {
-      "id": "SW4I71QwmWvzfOF8xWQMY",
-      "label": "Demand to order",
-      "color": "#fb60c2"
+      "id": "demand-to-order",
+      "label": "Demand to Order",
+      "color": "#3b82f6"
     },
     {
-      "id": "leKgN-t0moAQ8tOYPgmCt",
-      "label": "quote to order",
-      "color": "#60fb7f"
+      "id": "quote-to-order",
+      "label": "Quote to Order",
+      "color": "#a855f7"
     },
     {
-      "id": "uvuMJr0wSDExhcajhauNF",
-      "label": "issue to resolution",
-      "color": "#fbc260"
+      "id": "issue-to-resolution",
+      "label": "Issue to Resolution",
+      "color": "#f97316"
+    },
+    {
+      "id": "hello",
+      "label": "hello",
+      "color": "#22c55e"
     }
   ]
 }
