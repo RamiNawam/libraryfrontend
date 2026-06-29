@@ -40,11 +40,13 @@ async function handleSync(_req, res) {
 // ---------------------------------------------------------------------------
 async function syncLogicAppsToGraph() {
   const db = loadDb();
+  const errors = [];
 
   // 1. Legacy .env workflow list
   let legacyResults = [];
   try { legacyResults = await getAllWorkflowHealth(); } catch (e) {
     console.error('[sync] Legacy workflow health failed:', e.message);
+    errors.push({ workflowName: null, flowId: null, error: e.message });
   }
 
   // 2. Scan connectionNode flows for Logic App integrations
@@ -57,6 +59,7 @@ async function syncLogicAppsToGraph() {
           graphResults.push(await getLogicAppHealth({ ...flow.integration, flowId: flow.id }));
         } catch (e) {
           console.error(`[sync] Flow ${flow.id} failed:`, e.message);
+          errors.push({ workflowName: flow.integration.workflowName, flowId: flow.id, error: e.message });
         }
       }
     }
@@ -70,12 +73,21 @@ async function syncLogicAppsToGraph() {
           graphResults.push(await getLogicAppHealth({ ...flow.integration, flowId: flow.id }));
         } catch (e) {
           console.error(`[sync] Edge flow ${flow.id} failed:`, e.message);
+          errors.push({ workflowName: flow.integration.workflowName, flowId: flow.id, error: e.message });
         }
       }
     }
   }
 
   const allResults = [...legacyResults, ...graphResults];
+
+  // getLogicAppHealth swallows its own failures and returns lastError instead of
+  // throwing — collect those so the client can show what went wrong with Azure.
+  for (const r of allResults) {
+    if (r.lastError) {
+      errors.push({ workflowName: r.workflowName || null, flowId: r.flowId || null, error: r.lastError });
+    }
+  }
 
   // 4. Apply results to connectionNode flows
   for (const entity of db.entities) {
@@ -132,6 +144,7 @@ async function syncLogicAppsToGraph() {
     dataflows:    db.dataflows,
     valueStreams:  db.valueStreams || [],
     bootstrapped: db.bootstrapped,
+    errors,
   };
 }
 

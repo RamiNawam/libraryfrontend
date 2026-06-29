@@ -1,6 +1,7 @@
 import { memo } from 'react';
-import { BaseEdge, getBezierPath, EdgeLabelRenderer, type EdgeProps } from '@xyflow/react';
+import { BaseEdge, getBezierPath, EdgeLabelRenderer, useInternalNode, type EdgeProps } from '@xyflow/react';
 import type { EdgeFlowData, HealthStatus } from '../../types';
+import { getFloatingEdgeParams } from '../../lib/floatingEdge';
 
 function edgeColor(health: HealthStatus): string {
   switch (health) {
@@ -14,28 +15,30 @@ function edgeColor(health: HealthStatus): string {
 
 export const FlowEdge = memo(function FlowEdge({
   id,
-  sourceX,
-  sourceY,
-  targetX,
-  targetY,
-  sourcePosition,
-  targetPosition,
+  source,
+  target,
   data,
   selected,
 }: EdgeProps) {
+  const sourceNode = useInternalNode(source);
+  const targetNode = useInternalNode(target);
+
   const flowData = (data ?? {}) as Partial<EdgeFlowData>;
   const health = flowData.health ?? 'unknown';
   const name = flowData.name;
   const color = edgeColor(health);
   const isLive = health !== 'unknown';
 
+  if (!sourceNode || !targetNode) return null;
+
+  const { sx, sy, tx, ty, sourcePos, targetPos } = getFloatingEdgeParams(sourceNode, targetNode);
   const [edgePath, labelX, labelY] = getBezierPath({
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-    sourcePosition,
-    targetPosition,
+    sourceX: sx,
+    sourceY: sy,
+    targetX: tx,
+    targetY: ty,
+    sourcePosition: sourcePos,
+    targetPosition: targetPos,
   });
 
   return (

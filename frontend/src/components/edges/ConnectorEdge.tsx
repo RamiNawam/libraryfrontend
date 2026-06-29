@@ -1,6 +1,7 @@
 import { memo } from 'react';
-import { BaseEdge, getSmoothStepPath, type EdgeProps } from '@xyflow/react';
+import { BaseEdge, getBezierPath, useInternalNode, type EdgeProps } from '@xyflow/react';
 import type { EdgeFlowData, HealthStatus } from '../../types';
+import { getFloatingEdgeParams } from '../../lib/floatingEdge';
 
 function edgeColor(health: HealthStatus): string {
   switch (health) {
@@ -14,28 +15,29 @@ function edgeColor(health: HealthStatus): string {
 
 export const ConnectorEdge = memo(function ConnectorEdge({
   id,
-  sourceX,
-  sourceY,
-  targetX,
-  targetY,
-  sourcePosition,
-  targetPosition,
+  source,
+  target,
   data,
   selected,
 }: EdgeProps) {
+  const sourceNode = useInternalNode(source);
+  const targetNode = useInternalNode(target);
+
   const flowData = (data ?? {}) as Partial<EdgeFlowData>;
   const health = flowData.health ?? 'unknown';
   const color = edgeColor(health);
   const isLive = health !== 'unknown';
 
-  const [edgePath] = getSmoothStepPath({
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-    sourcePosition,
-    targetPosition,
-    borderRadius: 8,
+  if (!sourceNode || !targetNode) return null;
+
+  const { sx, sy, tx, ty, sourcePos, targetPos } = getFloatingEdgeParams(sourceNode, targetNode);
+  const [edgePath] = getBezierPath({
+    sourceX: sx,
+    sourceY: sy,
+    targetX: tx,
+    targetY: ty,
+    sourcePosition: sourcePos,
+    targetPosition: targetPos,
   });
 
   return (

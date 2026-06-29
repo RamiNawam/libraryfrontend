@@ -9,13 +9,23 @@ export interface GraphResponse {
   dataflows: MockEdge[];
   bootstrapped: boolean;
   valueStreams: ValueStream[];
+  errors?: { workflowName?: string | null; flowId?: string | null; error: string }[];
 }
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${BASE_URL}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options,
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${BASE_URL}${path}`, {
+      headers: { 'Content-Type': 'application/json' },
+      ...options,
+    });
+  } catch {
+    // fetch() throws TypeError("Failed to fetch") when the server is unreachable
+    throw new Error(
+      `Cannot reach the backend at ${BASE_URL}. Is the backend running? ` +
+      `Start it with: cd backend && npm install && node server.js`
+    );
+  }
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: res.statusText }));
     throw new Error(err.error || `HTTP ${res.status}`);

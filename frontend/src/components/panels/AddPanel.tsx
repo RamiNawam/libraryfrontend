@@ -61,17 +61,27 @@ export function AddPanel() {
 // Add Entity
 // ---------------------------------------------------------------------------
 function AddEntityForm({ onDone }: { onDone: () => void }) {
-  const addNode = useGraphStore((s) => s.addNode);
+  const { addNode, valueStreams } = useGraphStore(useShallow((s) => ({
+    addNode: s.addNode,
+    valueStreams: s.valueStreams,
+  })));
   const [name, setName] = useState('');
+  const [streamIds, setStreamIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  function toggleStream(id: string) {
+    setStreamIds((ids) =>
+      ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]
+    );
+  }
 
   async function handleAdd() {
     if (!name.trim()) { setError('Name is required'); return; }
     setError('');
     setLoading(true);
     try {
-      await addNode(name.trim(), []);
+      await addNode(name.trim(), [], streamIds);
       onDone();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed');
@@ -94,6 +104,33 @@ function AddEntityForm({ onDone }: { onDone: () => void }) {
         />
         {error && <div className="text-xs text-red-400 mt-1">{error}</div>}
       </div>
+
+      {valueStreams.length > 0 && (
+        <div>
+          <label className="text-xs text-gray-400 block mb-1">Value Streams</label>
+          <div className="max-h-32 overflow-y-auto space-y-1 border border-[#2a2d3e] rounded p-2 bg-[#0f1117]">
+            {valueStreams.map((vs) => (
+              <label
+                key={vs.id}
+                className="flex items-center gap-2 text-[12px] text-gray-300 cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  checked={streamIds.includes(vs.id)}
+                  onChange={() => toggleStream(vs.id)}
+                  className="accent-blue-500"
+                />
+                <span
+                  className="w-2 h-2 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: vs.color }}
+                />
+                <span className="truncate">{vs.label}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
+
       <button
         onClick={handleAdd}
         disabled={loading}

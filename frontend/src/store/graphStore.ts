@@ -21,7 +21,7 @@ interface GraphState {
 
 interface GraphActions {
   hydrate: () => Promise<void>;
-  addNode: (name: string, layers: string[]) => Promise<void>;
+  addNode: (name: string, layers: string[], valueStreamIds?: string[]) => Promise<void>;
   addGroup: (name: string) => Promise<void>;
   addConnection: (sourceId: string, targetId: string, name: string) => Promise<void>;
   addEdge: (source: string, target: string, name: string, apiLink?: string) => Promise<void>;
@@ -98,7 +98,7 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
   },
 
   // ---- addNode (entity / system node) ----
-  addNode: async (name, layers) => {
+  addNode: async (name, layers, valueStreamIds = []) => {
     const node = await api.createEntity({
       type: 'systemNode',
       position: { x: canvasMousePos.x, y: canvasMousePos.y },
@@ -115,6 +115,22 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
       },
     });
     set((s) => ({ nodes: [...s.nodes, node] }));
+
+    // Add the new entity to the selected value streams
+    if (valueStreamIds.length > 0) {
+      const updated = await Promise.all(
+        valueStreamIds.map((vsId) => {
+          const vs = get().valueStreams.find((v) => v.id === vsId);
+          const nodeIds = [...(vs?.nodeIds ?? []), node.id];
+          return api.patchValueStream(vsId, { nodeIds });
+        })
+      );
+      set((s) => ({
+        valueStreams: s.valueStreams.map(
+          (v) => updated.find((u) => u.id === v.id) ?? v
+        ),
+      }));
+    }
   },
 
   // ---- addGroup ----
@@ -278,12 +294,19 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
     set({ isSyncing: true, syncError: null });
     try {
       const graph = await api.syncAzureLogicAppsToGraph();
+      const azureErrors = graph.errors || [];
+      const syncError = azureErrors.length
+        ? azureErrors
+            .map((e) => `${e.workflowName || e.flowId || 'workflow'}: ${e.error}`)
+            .join('; ')
+        : null;
       set({
         nodes: graph.entities,
         edges: graph.dataflows,
         valueStreams: graph.valueStreams,
         lastUpdated: new Date().toISOString(),
         isSyncing: false,
+        syncError,
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Sync failed';

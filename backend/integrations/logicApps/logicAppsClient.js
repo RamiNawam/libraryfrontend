@@ -11,6 +11,12 @@ const querystring = require('querystring');
 let _tokenCache = null;
 let _tokenExpiresAt = 0;
 
+// A value is "unset" if it's empty or still a scaffold placeholder (your-..., xxxx...)
+function looksUnset(v) {
+  const s = String(v || '').trim();
+  return !s || /^your[-_]/i.test(s) || /^x{4,}/i.test(s);
+}
+
 async function getToken() {
   if (_tokenCache && Date.now() < _tokenExpiresAt) return _tokenCache;
 
@@ -18,8 +24,16 @@ async function getToken() {
   const clientId = process.env.AZURE_CLIENT_ID;
   const clientSecret = process.env.AZURE_CLIENT_SECRET;
 
-  if (!tenantId || !clientId || !clientSecret) {
-    throw new Error('Azure credentials not configured (AZURE_TENANT_ID / AZURE_CLIENT_ID / AZURE_CLIENT_SECRET)');
+  const unset = [];
+  if (looksUnset(tenantId))     unset.push('AZURE_TENANT_ID');
+  if (looksUnset(clientId))     unset.push('AZURE_CLIENT_ID');
+  if (looksUnset(clientSecret)) unset.push('AZURE_CLIENT_SECRET');
+  if (unset.length) {
+    throw new Error(
+      `Azure credentials not configured: ${unset.join(', ')} ` +
+      `${unset.length === 1 ? 'is empty or still a placeholder' : 'are empty or still placeholders'} ` +
+      `in backend/.env. Set the real values (use the client secret VALUE, not its ID) and restart the backend.`
+    );
   }
 
   const body = querystring.stringify({
