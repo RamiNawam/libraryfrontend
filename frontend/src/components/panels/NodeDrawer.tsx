@@ -104,7 +104,7 @@ export function NodeDrawer({ nodeId, onClose }: NodeDrawerProps) {
         {platform && (
           <div>
             <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1.5">
-              {platform.type === 'azure' ? 'Azure' : 'Salesforce'} Health Check
+              {platform.type === 'azure' ? 'Azure' : 'Sales Hub'} Health Check
             </div>
             <div className="bg-[#0f1117] border border-[#2a2d3e] p-2.5 space-y-1.5" style={{ borderRadius: 3 }}>
               <div className="text-[12px] text-gray-300">

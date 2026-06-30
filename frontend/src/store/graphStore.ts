@@ -292,7 +292,7 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
     await get().checkPlatformHealth();
   },
 
-  // ---- checkPlatformHealth (Azure / Salesforce up-down) ----
+  // ---- checkPlatformHealth (Azure / Sales Hub up-down) ----
   checkPlatformHealth: async () => {
     const graph = await api.checkPlatformHealth();
     set({

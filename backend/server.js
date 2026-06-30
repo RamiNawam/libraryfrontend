@@ -33,7 +33,7 @@ app.use('/api/connections',   connectionsRouter);    // POST /api/connections (c
 app.use('/api/dataflows',     dataflowsRouter);      // Edge CRUD
 app.use('/api/valuestreams',  valueStreamsRouter);   // Value stream CRUD
 app.use('/api/azure',         azureRouter);          // Azure Logic Apps sync
-app.use('/api/platform',      platformRouter);       // Platform up/down checks (Azure, Salesforce)
+app.use('/api/platform',      platformRouter);       // Platform up/down checks (Azure, Sales Hub)
 
 app.listen(PORT, () => {
   console.log(`GenDigitalTwin backend  →  http://localhost:${PORT}`);

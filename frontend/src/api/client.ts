@@ -185,7 +185,7 @@ export function syncAzureLogicAppsToGraph(): Promise<GraphResponse> {
 }
 
 // ---------------------------------------------------------------------------
-// Platform health (Azure / Salesforce up-down checks)
+// Platform health (Azure / Sales Hub up-down checks)
 // ---------------------------------------------------------------------------
 
 export function checkPlatformHealth(): Promise<GraphResponse> {

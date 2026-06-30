@@ -123,7 +123,7 @@ export function GroupDrawer({ nodeId, onClose }: GroupDrawerProps) {
             {platform && (
               <div className="space-y-2">
                 <div className="text-xs text-gray-500 uppercase tracking-wider">
-                  {platform.type === 'azure' ? 'Azure' : 'Salesforce'} Health Check
+                  {platform.type === 'azure' ? 'Azure' : 'Sales Hub'} Health Check
                 </div>
                 <span
                   className="inline-block text-[12px] font-medium px-2 py-1"

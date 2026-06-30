@@ -95,10 +95,10 @@ export interface NodeMetrics {
   errorRate?: number;
 }
 
-// Marks a node as a monitored platform (Azure / Salesforce) for up/down checks.
+// Marks a node as a monitored platform (Azure / Sales Hub) for up/down checks.
 export interface PlatformConfig {
-  type: 'azure' | 'salesforce';
-  instanceKey?: string; // Salesforce instance key (e.g. "USA123"); optional
+  type: 'azure' | 'salesHub';
+  orgUrl?: string; // Sales Hub (Dataverse) org URL, e.g. "https://yourorg.crm.dynamics.com"; optional
 }
 
 // Result of the last platform reachability check.

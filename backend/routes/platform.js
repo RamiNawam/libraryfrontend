@@ -3,19 +3,19 @@
  *   POST /api/platform/health-graph      – check every node tagged with data.platform
  *   POST /api/platform/health/:nodeId    – re-check a single node ("Check now")
  *
- * A node opts in by setting data.platform = { type: 'azure' | 'salesforce', ... }.
+ * A node opts in by setting data.platform = { type: 'azure' | 'salesHub', ... }.
  * The result is written to data.health, data.mode and data.healthCheck.
  */
 const express = require('express');
 const { loadDb, saveDb } = require('../db');
 const { getAzureReachability } = require('../integrations/logicApps/logicAppsClient');
-const { getSalesforceStatus } = require('../integrations/salesforce/salesforceClient');
+const { getDynamicsStatus } = require('../integrations/dynamics/dynamicsClient');
 
 const router = express.Router();
 
 async function runCheck(platform) {
   if (platform.type === 'azure') return getAzureReachability();
-  if (platform.type === 'salesforce') return getSalesforceStatus(platform);
+  if (platform.type === 'salesHub') return getDynamicsStatus(platform);
   return {
     status: 'unknown',
     mode: 'not_connected',
