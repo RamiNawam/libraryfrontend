@@ -144,6 +144,75 @@ export function GroupDrawer({ nodeId, onClose }: GroupDrawerProps) {
                     </div>
                   )}
                 </div>
+
+                {/* Full Azure org report */}
+                {healthCheck?.report && (
+                  <div className="space-y-2">
+                    {/* Resource health rollup */}
+                    <div className="bg-[#0f1117] border border-[#2a2d3e] p-2.5 rounded space-y-1.5">
+                      <div className="text-[10px] text-gray-500 uppercase tracking-wider">
+                        Resource Health ({healthCheck.report.resourceHealth.total})
+                      </div>
+                      <div className="grid grid-cols-2 gap-1.5">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#3fb950' }} />
+                          <span className="text-[12px] text-gray-300">{healthCheck.report.resourceHealth.available} available</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#d29922' }} />
+                          <span className="text-[12px] text-gray-300">{healthCheck.report.resourceHealth.degraded} degraded</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#e5534b' }} />
+                          <span className="text-[12px] text-gray-300">{healthCheck.report.resourceHealth.unavailable} unavailable</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#5a6378' }} />
+                          <span className="text-[12px] text-gray-300">{healthCheck.report.resourceHealth.unknown} unknown</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Subscriptions */}
+                    <div className="bg-[#0f1117] border border-[#2a2d3e] p-2.5 rounded space-y-1">
+                      <div className="text-[10px] text-gray-500 uppercase tracking-wider">
+                        Subscriptions ({healthCheck.report.subscriptions.length})
+                      </div>
+                      {healthCheck.report.subscriptions.map((sub) => (
+                        <div key={sub.id} className="flex items-center justify-between">
+                          <span className="text-[12px] text-gray-300 truncate">{sub.name}</span>
+                          <span className="text-[10px] text-gray-500 ml-2 flex-shrink-0">{sub.state}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Active Service Health incidents */}
+                    <div className="bg-[#0f1117] border border-[#2a2d3e] p-2.5 rounded space-y-1.5">
+                      <div className="text-[10px] text-gray-500 uppercase tracking-wider">
+                        Active Incidents ({healthCheck.report.incidents.length})
+                      </div>
+                      {healthCheck.report.incidents.length === 0 ? (
+                        <div className="text-[12px] text-gray-600">No active Service Health events.</div>
+                      ) : (
+                        healthCheck.report.incidents.map((inc, i) => (
+                          <div key={inc.trackingId ?? i} className="border-l-2 border-red-500/50 pl-2 space-y-0.5">
+                            <div className="text-[12px] text-gray-200 break-words">{inc.title}</div>
+                            <div className="text-[10px] text-gray-500">
+                              {inc.eventType}
+                              {inc.eventLevel ? ` · ${inc.eventLevel}` : ''} · {inc.subscription}
+                            </div>
+                            {inc.impactStartTime && (
+                              <div className="text-[10px] text-gray-600">
+                                Since {new Date(inc.impactStartTime).toLocaleString()}
+                              </div>
+                            )}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {checkError && (
                   <div className="text-[11px] text-red-400 break-words">{checkError}</div>
                 )}

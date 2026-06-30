@@ -8,13 +8,13 @@
  */
 const express = require('express');
 const { loadDb, saveDb } = require('../db');
-const { getAzureReachability } = require('../integrations/logicApps/logicAppsClient');
+const { getAzureOrgHealth } = require('../integrations/azure/azureClient');
 const { getDynamicsStatus } = require('../integrations/dynamics/dynamicsClient');
 
 const router = express.Router();
 
 async function runCheck(platform) {
-  if (platform.type === 'azure') return getAzureReachability();
+  if (platform.type === 'azure') return getAzureOrgHealth();
   if (platform.type === 'salesHub') return getDynamicsStatus(platform);
   return {
     status: 'unknown',
@@ -35,6 +35,7 @@ function applyResult(entity, result) {
       detail: result.detail,
       checkedAt: result.checkedAt,
       lastError: result.lastError || null,
+      ...(result.report ? { report: result.report } : {}),
     },
   };
 }

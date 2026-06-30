@@ -101,12 +101,33 @@ export interface PlatformConfig {
   orgUrl?: string; // Sales Hub (Dataverse) org URL, e.g. "https://yourorg.crm.dynamics.com"; optional
 }
 
+// Full Azure org-health report (attached to the Azure platform's healthCheck).
+export interface AzureOrgReport {
+  subscriptions: { id: string; name: string; state: string }[];
+  resourceHealth: {
+    available: number;
+    degraded: number;
+    unavailable: number;
+    unknown: number;
+    total: number;
+  };
+  incidents: {
+    subscription: string;
+    title: string;
+    eventType: string;
+    eventLevel?: string | null;
+    trackingId?: string | null;
+    impactStartTime?: string | null;
+  }[];
+}
+
 // Result of the last platform reachability check.
 export interface PlatformHealthCheck {
   status: HealthStatus;
   detail: string;
   checkedAt: string;
   lastError?: string | null;
+  report?: AzureOrgReport;
 }
 
 export interface SystemNodeData {
